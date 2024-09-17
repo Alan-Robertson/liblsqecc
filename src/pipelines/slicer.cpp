@@ -580,7 +580,4 @@ namespace lsqecc
         return json_res.dump(3);
     }
 
-
-
-
 }

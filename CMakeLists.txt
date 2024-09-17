@@ -79,6 +79,7 @@ add_library(
         src/ls_instructions/catalytic_s_gate_injection_stream.cpp
         src/ls_instructions/local_instructions.cpp
         src/scheduler/wave_scheduler.cpp
+        src/api/layout_c_api.cpp
        )
 
 set(LSQECCLIB_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include")
