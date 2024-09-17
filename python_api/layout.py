@@ -2,10 +2,38 @@ from ctypes import POINTER, Structure, Union, c_byte, c_int8, c_int32, c_int64, 
 from symbol import Symbol
 from enum_wrapper import Enum, EnumDefaultType
 
+
+class Grid:
+    def __init__(self, height, width):
+        self.height = height
+        self.width = width
+        self.grid = [[RoutingAncilla(i, j) for j in range(self.width)] for i in range(self.height)]      
+
+    def setitem(self, Type, y, x): 
+       self.grid[y][x] = Type(y, x) 
+
+
 class LayoutCell:
-    def __init__(self, x, y):
+    def __init__(self, y, x):
         self.x = x
         self.y = y 
+    def __gt__(self, other):
+        if self.y != other.y:
+            return self.y > other.y
+        else:
+            return self.x > other.x
+
+    def __lt__(self, other):
+        return not self.__gt__(other)
+
+    def __le__(self, other):
+        return self.__lt__(other)
+
+    def __ge__(self, other):
+        return self.__gt__(other)
+
+    def update(self, Type):
+        return Type(self.y, self.x)
 
 def cell_factory(name, symbol, enum_val, **kwargs): 
     '''
@@ -13,7 +41,7 @@ def cell_factory(name, symbol, enum_val, **kwargs):
     '''
     return type(str(name), (LayoutCell,), {'symbol':symbol, 'enum_val':enum_val} | kwargs)
 
-cell_types_list = [  
+cell_types_list = [
         (Symbol('RoutingAncilla'), Symbol('r')),
         (Symbol('LogicalComputationQubit_StandardBorderOrientation'), Symbol('Q')),
         (Symbol('LogicalComputationQubit_RotatedBorderOrientation'), Symbol('T')),

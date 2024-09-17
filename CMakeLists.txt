@@ -48,6 +48,7 @@ include_directories(external/include)
 
 add_library(
         lsqecclib
+        SHARED
         src/dag/directed_graph.cpp
         src/dag/domain_dags.cpp
         src/gates/parse_gates.cpp
@@ -90,7 +91,7 @@ target_include_directories(
     ${LSQECCLIB_INCLUDE_DIRS}
 )
 
-set_property(TARGET lsqecclib PROPERTY POSITION_INDEPENDENT_CODE ON)
+#set_property(TARGET lsqecclib PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 
 if(USE_GRIDSYNTH) 
