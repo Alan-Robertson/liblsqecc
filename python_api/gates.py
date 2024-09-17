@@ -1,6 +1,6 @@
 from ctypes import POINTER, Structure, Union, c_byte, c_int8, c_int32, c_int64, c_int, c_char 
 from symbol import Symbol
-from enum import Enum, EnumDefaultType
+from enum_wrapper import Enum, EnumDefaultType
 
 # Matching layer for types defined in `gates.hpp` 
 BoolType = c_int8 
