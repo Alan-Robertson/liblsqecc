@@ -1,3 +1,8 @@
+'''
+    enum.py
+    Some wrappers for helping deal with enum type objects
+'''
+
 from ctypes import c_int
 
 EnumDefaultType = c_int
@@ -11,4 +16,3 @@ def Enum(vals, c_type=EnumDefaultType):
         symbol:c_type(i) 
         for i, symbol in enumerate(vals)
     }
-
