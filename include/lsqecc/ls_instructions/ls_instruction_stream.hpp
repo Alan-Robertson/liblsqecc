@@ -27,6 +27,14 @@ public:
     virtual const tsl::ordered_set<PatchId>& core_qubits() const = 0;
 
     virtual ~LSInstructionStream(){};
+
+
+    void queue_instruction_from_gate(
+        gates::Gate next_gate,
+        std::queue<LSInstruction> next_instructions_,
+        LSIinstructionFromGatesGenerator instruction_generator_
+    );
+
 };
 
 

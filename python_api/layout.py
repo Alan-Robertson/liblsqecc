@@ -1,14 +1,20 @@
-from ctypes import cdll, POINTER, Structure, Union, c_byte, c_int8, c_int32, c_int64, c_int, c_char 
+from ctypes import cdll, POINTER, Structure, Union, c_byte, c_int8, c_int32, c_int64, c_int, c_char, c_buffer 
 from symbol import Symbol
 from enum_wrapper import Enum, EnumDefaultType
 
-import c_array
+from liblsqecclib import create_libsqecclib_grid 
 
 class Grid:
     def __init__(self, height, width):
         self.height = height
         self.width = width
         self.grid = [[RoutingAncilla(i, j) for j in range(self.width)] for i in range(self.height)]      
+
+    def pass_to_lib(self):
+         return create_libsqecclib_grid(self) 
+
+    def __call__(self):
+        return self.pass_to_lib()
 
     def setitem(self, Type, y, x): 
        self.grid[y][x] = Type(y, x) 
@@ -17,9 +23,15 @@ class Grid:
         return self.grid[y][x]
 
     def cells(self): 
-        pass          
-
-
+        '''
+            Returns a C array of elements
+        '''
+        buff = c_buffer(self.height * self.width)
+        for i in range(self.height):
+            for j in range(self.width):
+                buff[i * self.height + j] = self.grid[i][j].symbol.__bytes__()  
+        return buff
+    
 class LayoutCell:
     def __init__(self, y, x):
         self.x = x

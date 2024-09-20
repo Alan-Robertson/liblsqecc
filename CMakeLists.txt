@@ -81,6 +81,9 @@ add_library(
         src/ls_instructions/local_instructions.cpp
         src/scheduler/wave_scheduler.cpp
         src/api/layout_c_api.cpp
+        src/api/router_c_api.cpp
+        src/api/pipeline_mode_c_api.cpp
+        src/api/gates_c_api.cpp
        )
 
 set(LSQECCLIB_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include")

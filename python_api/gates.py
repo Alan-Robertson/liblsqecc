@@ -131,4 +131,3 @@ CRZ = lambda ctrl, targ, numerator, denominator, cnot_type, anc_type  : Controll
         CNOTEnum['ZX_WITH_MBM_CONTROL_FIRST'],
         CNOTAncillaPlacementEnum['ANCILLA_NEXT_TO_CONTROL']
     )
- 

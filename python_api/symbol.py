@@ -15,6 +15,8 @@ class __Symbol:
         return self.val
     def __str__(self):
         return self.__repr__() 
+    def __bytes__(self):
+        return self.val.encode('ascii')
 
 # Dodgy global dict tracking current singletons
 __registered = dict() 
