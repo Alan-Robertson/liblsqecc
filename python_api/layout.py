@@ -1,7 +1,8 @@
-from ctypes import POINTER, Structure, Union, c_byte, c_int8, c_int32, c_int64, c_int, c_char 
+from ctypes import cdll, POINTER, Structure, Union, c_byte, c_int8, c_int32, c_int64, c_int, c_char 
 from symbol import Symbol
 from enum_wrapper import Enum, EnumDefaultType
 
+import c_array
 
 class Grid:
     def __init__(self, height, width):
@@ -12,11 +13,18 @@ class Grid:
     def setitem(self, Type, y, x): 
        self.grid[y][x] = Type(y, x) 
 
+    def getitem(self, y, x):
+        return self.grid[y][x]
+
+    def cells(self): 
+        pass          
+
 
 class LayoutCell:
     def __init__(self, y, x):
         self.x = x
         self.y = y 
+
     def __gt__(self, other):
         if self.y != other.y:
             return self.y > other.y
@@ -34,6 +42,12 @@ class LayoutCell:
 
     def update(self, Type):
         return Type(self.y, self.x)
+
+    def __str__(self):
+        return str(self.symbol)
+   
+    def __repr__(self): 
+        return self.__str__()
 
 def cell_factory(name, symbol, enum_val, **kwargs): 
     '''
