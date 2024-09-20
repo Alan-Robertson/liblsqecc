@@ -4,7 +4,7 @@
 
 namespace lsqecc{
 
-class LSInstructionStreamFromCAPI : public LSInstructionStream {
+class LSInstructionStreamFromCAPI : public LSInstructionStream{
 public:
     LSInstructionStreamFromCAPI(
             gates::Gate* gate_arr,
@@ -48,8 +48,8 @@ LSInstruction LSInstructionStreamFromCAPI::get_next_instruction()
             throw std::logic_error{"LSInstructionStreamFromCAPI: No more gates but requesting instructions"};
         }
           gates::Gate next_gate = gate_arr[curr_gate];
-
     }
+    return next_instructions_.front();
 }
 
 // Prevent mangling of api function names
@@ -64,11 +64,11 @@ extern "C" {
 void* api_create_gate_stream(size_t n_gates, void* gates) 
 {
 
-    LSInstructionStream instruction_stream = LSInstructionStreamFromCAPI(
+    std::unique_ptr<LSInstructionStreamFromCAPI> instruction_stream = std::make_unique<LSInstructionStreamFromCAPI>(
         (gates::Gate*)gates,
         n_gates);
 
-    return (void*)instruction_stream;
+    return (void*)instruction_stream.release();
 }
 
 } // extern "C"
