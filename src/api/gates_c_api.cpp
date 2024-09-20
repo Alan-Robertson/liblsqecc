@@ -1,24 +1,31 @@
 #include <lsqecc/ls_instructions/ls_instruction_stream.hpp>
+#include <lsqecc/ls_instructions/id_generator.hpp>
+
 
 namespace lsqecc{
 
 class LSInstructionStreamFromCAPI : public LSInstructionStream {
 public:
     LSInstructionStreamFromCAPI(
-            gates::Gate* gate_arr, // TODO why is this not rvalue ref?
-            size_t n_gates,
-            CNOTCorrectionMode cnot_correction_mode,
-            IdGenerator& id_generator,
-            bool local_instructions
+            gates::Gate* gate_arr,
+            size_t n_gates
             );
 
     LSInstruction get_next_instruction() override;
 
-//    bool has_next_instruction() const override {
-//        return next_instructions_.size() || gate_stream_.has_next_gate();
-//    };
-//
+    bool has_next_instruction() const override {
+        return next_instructions_.size();
+    };
+
     const tsl::ordered_set<PatchId>& core_qubits() const override;
+
+
+    void queue_instruction_from_gate(
+        gates::Gate next_gate,
+        std::queue<LSInstruction> next_instructions_,
+        LSIinstructionFromGatesGenerator instruction_generator_
+    ){};
+
 
 private:
     
@@ -26,8 +33,8 @@ private:
     size_t curr_gate;   
     size_t n_gates; 
     gates::Gate* gate_arr;
-
-    
+    std::queue<LSInstruction> next_instructions_;
+    IdGenerator id_generator;
 
 };
 
@@ -54,12 +61,12 @@ extern "C" {
  * Default uses A*
  * TODO: Make the router type an argument  
  */
-void* api_create_gate_stream() 
+void* api_create_gate_stream(size_t n_gates, void* gates) 
 {
 
-    GateStream gate_stream;
-
-    LSInstructionStream instruction_stream = LSInstructionStreamFromGateStream(*gate_stream, cnot_correction_mode, id_generator, compile_mode == CompilationMode::Local);    
+    LSInstructionStream instruction_stream = LSInstructionStreamFromCAPI(
+        (gates::Gate*)gates,
+        n_gates);
 
     return (void*)instruction_stream;
 }
