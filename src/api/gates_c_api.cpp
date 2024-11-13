@@ -17,7 +17,11 @@ public:
         return next_instructions_.size();
     };
 
-    const tsl::ordered_set<PatchId>& core_qubits() const override;
+    const tsl::ordered_set<PatchId>& core_qubits() const override
+    {
+        // These should be initialised
+        return _core_qubits;
+    };
 
 
     void queue_instruction_from_gate(
@@ -35,6 +39,8 @@ private:
     gates::Gate* gate_arr;
     std::queue<LSInstruction> next_instructions_;
     IdGenerator id_generator;
+
+    tsl::ordered_set<PatchId> _core_qubits;
 
 };
 
