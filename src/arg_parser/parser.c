@@ -2,6 +2,7 @@ argparse::ArgumentParser* init(int argc, const char** argv)
 {
     std::string prog_name{argv[0]};
 
+    // TODO move all of this to an array   
     argparse::ArgumentParser* parser = new argparse::ArgumentParser(prog_name, "Slice LS-Instructions");
     parser.add_argument()
             .names({"-i", "--input"})
@@ -112,9 +113,12 @@ argparse::ArgumentParser* init(int argc, const char** argv)
         err_stream << err << std::endl;
         parser.print_help();
     }
+
+    // TODO: Should this not halt?
     if (parser.exists("help"))
     {
         parser.print_help();
     }
+
     return parser;
 }
